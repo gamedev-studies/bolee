@@ -1,15 +1,12 @@
 Class {
 	#name : #Sargemt,
 	#superclass : #Object,
-	#instVars : [
-		'lorem',
-		'ipsum'
-	],
-	#category : #'Sargemt'
+	#category : #Sargemt
 }
 
-{ #category : #'main' }
+{ #category : #main }
 Sargemt >> run [
-"this is a test"
-	Transcript show: 'fds'.
+   "this is a test"
+	Transcript show: 'test'. 
+	Transcript cr.
 ]
