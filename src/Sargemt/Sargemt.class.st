@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'lorem',
-		'ipsum',
+		'ipsum'
 	],
 	#category : #'Sargemt'
 }
