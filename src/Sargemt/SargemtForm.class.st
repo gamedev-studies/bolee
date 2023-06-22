@@ -15,7 +15,8 @@ Class {
 		'generateMSEButton',
 		'btnGen',
 		'feedbackMessage',
-		'inputProjectName'
+		'inputProjectName',
+		'feedbackLabel'
 	],
 	#category : #Sargemt
 }
@@ -31,7 +32,7 @@ SargemtForm class >> defaultLayout [
 			withConstraints: [ :constraints | constraints height: 40 ];
 		add:
 			(SpBoxLayout newHorizontal
-				add: #inputProjectPath;
+				add: #inputProjectPath; 
 				add:
 					(SpBoxLayout newVertical
 						add: #btnProjectPath
@@ -56,6 +57,15 @@ SargemtForm class >> defaultLayout [
 						withConstraints: [ :constraints | constraints height: 25 ])
 					withConstraints: [ :constraints | constraints width: 25 ])
 			withConstraints: [ :constraints | constraints height: 40 ];	
+	   add:
+			(SpBoxLayout newHorizontal add: #feedbackLabel; yourself)
+			withConstraints: [ :constraints | constraints height: 20 ];
+		add:
+			(SpBoxLayout newHorizontal add: #feedbackMessage; yourself)
+			withConstraints: [ :constraints | constraints height: 50 ];
+	   add:
+			(SpBoxLayout newHorizontal)
+			withConstraints: [ :constraints | constraints height: 10 ];
 		add:
 			(SpBoxLayout newHorizontal add: #btnGen; yourself)
 			withConstraints: [ :constraints | constraints height: 40 ];
@@ -69,19 +79,27 @@ SargemtForm class >> open [
 	^ self new open
 ]
 
+{ #category : #'as yet unclassified' }
+SargemtForm >> generateModel [
+	Transcript show: 'lets go'.
+]
+
 { #category : #layout }
 SargemtForm >> initialExtent [
-	^ 505 @ 250 + 190
+	^ 520 @ 330
 ]
 
 { #category : #initialization }
 SargemtForm >> initializePresenter [
+   self verifyPaths.
 	btnProjectPath  action: [ self selectProjectPath ].
 	btnCSVPath action: [ self selectCSVPath  ].
-	btnXMLPath action: [ self selectXMLPath  ].
+	btnXMLPath action: [ self selectXMLPath ].
+	inputProjectName input whenTextChangedDo: [ self verifyPaths ].
 	inputProjectPath input whenTextChangedDo: [ self verifyPaths ].
 	inputCSVPath input whenTextChangedDo: [ self verifyPaths  ].
 	inputXMLPath input whenTextChangedDo: [ self verifyPaths  ].
+	btnGen action: [ self generateModel ].
 ]
 
 { #category : #initialization }
@@ -92,7 +110,7 @@ SargemtForm >> initializeWidgets [
 				input:
 					(self newTextInput
 						autoAccept: true;
-						placeholder: 'Some name')).	
+						placeholder: 'e.g. MyEngine')).	
 
 	inputProjectPath := self
 		instantiate:
@@ -127,10 +145,14 @@ SargemtForm >> initializeWidgets [
 	btnGen := self newButton
 		label: 'Generate'.
 	"====="	
+	feedbackLabel := self
+		instantiate:
+			(SpLabelPresenter new
+				label: 'Analyser errors, resolve all before model generation').	
 	feedbackMessage := self
 		instantiate:
 			(SpTextPresenter new
-				text: 'a';
+				text: '';
 				disable).	
 	"====="		
 	self focusOrder
@@ -153,13 +175,10 @@ SargemtForm >> selectCSVPath [
 	lastPath := inputCSVPath input text.
 	lastPath isEmpty 
 		ifTrue: [ lastPath := FileLocator home ].
-	reference := UIManager default
-		chooseExistingFileReference: 'Select subsystem CSV file'
-		extensions: ''
-		path: lastPath.
+	reference := UIManager default chooseFullFileNameMatching: nil.
 		
 	reference
-		ifNotNil: [ inputCSVPath input text: reference pathString ]
+		ifNotNil: [ inputCSVPath input text: reference ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -169,7 +188,7 @@ SargemtForm >> selectProjectPath [
 	lastPath isEmpty 
 		ifTrue: [ lastPath := FileLocator home ].
 	reference := UIManager default
-		chooseExistingFileReference: 'Select a project folder'
+		chooseExistingFileReference: 'Select the project folder'
 		extensions: ''
 		path: lastPath.
 	reference
@@ -182,12 +201,9 @@ SargemtForm >> selectXMLPath [
 	lastPath := inputXMLPath input text.
 	lastPath isEmpty 
 		ifTrue: [ lastPath := FileLocator home ].
-	reference := UIManager default
-		chooseExistingFileReference: 'Select an include XML file'
-		extensions: ['xml']
-		path: lastPath.
+	reference := UIManager default chooseFullFileNameMatching: nil.
 	reference
-		ifNotNil: [ inputXMLPath input text: reference pathString ]
+		ifNotNil: [ inputXMLPath input text: reference ]
 ]
 
 { #category : #initialization }
@@ -197,28 +213,23 @@ SargemtForm >> title [
 
 { #category : #'as yet unclassified' }
 SargemtForm >> verifyPaths [
-	| green red normalColor newFeedbackMsgText |
-	normalColor := Smalltalk ui theme backgroundColor.
-	green := normalColor mixed: 0.8 with: Color green.
-	red := normalColor mixed: 0.8 with: Color red.
-	newFeedbackMsgText := ''.
-	inputCSVPath input
-		color:
-			(inputCSVPath input text asFileReference exists
-				& inputCSVPath input text isNotEmpty
-				ifTrue: [ green ]
-				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Project path is invalid.'. red ]).
-	inputCSVPath input
-		color:
-			(inputCSVPath input text asFileReference isFile
-				ifTrue: [ green ]
-				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Include XML path is invalid.'. red ]).
-	inputXMLPath input
-		color:
-			(inputXMLPath input text asFileReference exists
+    |newFeedbackMsgText|
+    newFeedbackMsgText := ''.
+    inputProjectName input text isEmpty
+				ifTrue: [ newFeedbackMsgText := newFeedbackMsgText , 'The project name is empty. ' ].
+	
+	inputProjectPath input text asFileReference exists
+				& inputProjectPath input text isNotEmpty
+				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Project path is invalid. ' ].
+	
+    inputCSVPath input text asFileReference isFile 
+			& inputCSVPath input text isNotEmpty
+				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Include XML path is invalid. ' ].
+	
+    inputXMLPath input text asFileReference exists
 				& inputXMLPath input text isNotEmpty
-				ifTrue: [ green ]
-				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Subsystem CSV path is invalid.'. red ]).
-	feedbackMessage text: newFeedbackMsgText; color: (newFeedbackMsgText isEmpty ifTrue:[ normalColor ] ifFalse:[ red]).
+				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Subsystem CSV path is invalid. ' ].
+	feedbackMessage text: newFeedbackMsgText.
+	feedbackMessage text isEmpty ifTrue: [ btnGen enable ] ifFalse: [btnGen disable].
 
 ]
