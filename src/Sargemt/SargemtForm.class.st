@@ -16,7 +16,9 @@ Class {
 		'btnGen',
 		'feedbackMessage',
 		'inputProjectName',
-		'feedbackLabel'
+		'feedbackLabel',
+		'feedbackList',
+		'feedbackMessages'
 	],
 	#category : #Sargemt
 }
@@ -61,8 +63,8 @@ SargemtForm class >> defaultLayout [
 			(SpBoxLayout newHorizontal add: #feedbackLabel; yourself)
 			withConstraints: [ :constraints | constraints height: 20 ];
 		add:
-			(SpBoxLayout newHorizontal add: #feedbackMessage; yourself)
-			withConstraints: [ :constraints | constraints height: 50 ];
+			(SpBoxLayout newHorizontal add: #feedbackList; yourself)
+			withConstraints: [ :constraints | constraints height: 100 ];
 	   add:
 			(SpBoxLayout newHorizontal)
 			withConstraints: [ :constraints | constraints height: 10 ];
@@ -81,12 +83,32 @@ SargemtForm class >> open [
 
 { #category : #'as yet unclassified' }
 SargemtForm >> generateModel [
-	Transcript show: 'lets go'.
+	|projectName projectPath XMLPath CSVPath importer tagger|
+	
+	projectPath := inputProjectPath input text.
+	XMLPath := inputXMLPath input text.
+	
+    "Create model using XML and metamodels".
+    importer := FamixCPreprocImporter new rootFolder: projectPath ; runOn: XMLPath.
+
+	"instantiate a new tagger and settings"
+	tagger := GroupTagger new.
+
+	"set index of the Moose model you want to query"
+	tagger setModel: importer model.
+
+	"set tag colors and project name"
+	tagger setColorMap: (Dictionary newFrom: { 'TEST' -> '#34b4eb' }).
+	tagger setProjectName: projectName.
+
+	"set autotagging to false"
+	tagger setAutotagFolderContents: false.
+
 ]
 
 { #category : #layout }
 SargemtForm >> initialExtent [
-	^ 520 @ 330
+	^ 520 @ 380
 ]
 
 { #category : #initialization }
@@ -104,6 +126,7 @@ SargemtForm >> initializePresenter [
 
 { #category : #initialization }
 SargemtForm >> initializeWidgets [
+   feedbackMessages := OrderedCollection new.
 	inputProjectName := self
 		instantiate:
 			(SpLabeledPresenter label: 'Project name'
@@ -149,11 +172,10 @@ SargemtForm >> initializeWidgets [
 		instantiate:
 			(SpLabelPresenter new
 				label: 'Analyser errors, resolve all before model generation').	
-	feedbackMessage := self
-		instantiate:
-			(SpTextPresenter new
-				text: '';
-				disable).	
+	feedbackList := self 
+	    instantiate: 
+	       (SpFilteringListPresenter new 
+	          items: feedbackMessages).		
 	"====="		
 	self focusOrder
 	   add: inputProjectName;
@@ -213,23 +235,25 @@ SargemtForm >> title [
 
 { #category : #'as yet unclassified' }
 SargemtForm >> verifyPaths [
-    |newFeedbackMsgText|
-    newFeedbackMsgText := ''.
+    |feedbackMessagesToShow|
+    feedbackMessagesToShow := OrderedCollection new.
     inputProjectName input text isEmpty
-				ifTrue: [ newFeedbackMsgText := newFeedbackMsgText , 'The project name is empty. ' ].
+				ifTrue: [ feedbackMessagesToShow add: '- Project name is empty' ].
 	
 	inputProjectPath input text asFileReference exists
 				& inputProjectPath input text isNotEmpty
-				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Project path is invalid. ' ].
+				ifFalse: [ feedbackMessagesToShow add: '- Project path is empty' ].
 	
     inputCSVPath input text asFileReference isFile 
 			& inputCSVPath input text isNotEmpty
-				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Include XML path is invalid. ' ].
+			& (inputCSVPath input text includesSubstring: '.csv')
+				ifFalse: [ feedbackMessagesToShow add: '- Subsystem CSV path is empty or not pointing to a CSV file' ].
 	
     inputXMLPath input text asFileReference exists
-				& inputXMLPath input text isNotEmpty
-				ifFalse: [ newFeedbackMsgText := newFeedbackMsgText , 'Subsystem CSV path is invalid. ' ].
-	feedbackMessage text: newFeedbackMsgText.
-	feedbackMessage text isEmpty ifTrue: [ btnGen enable ] ifFalse: [btnGen disable].
+			& inputXMLPath input text isNotEmpty 
+			& (inputXMLPath input text includesSubstring: '.xml') 
+			   ifFalse: [ feedbackMessagesToShow add: '- Include XML path is empty or not pointing to a XML file' ].
+	feedbackList items: feedbackMessagesToShow.
+	feedbackMessagesToShow isEmpty ifTrue: [ btnGen enable ] ifFalse: [btnGen disable].
 
 ]
