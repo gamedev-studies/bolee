@@ -18,7 +18,9 @@ Class {
 		'inputProjectName',
 		'feedbackLabel',
 		'feedbackList',
-		'feedbackMessages'
+		'feedbackMessages',
+		'droplistColormap',
+		'checkboxAutotag'
 	],
 	#category : #Sargemt
 }
@@ -58,7 +60,19 @@ SargemtForm class >> defaultLayout [
 						add: #btnXMLPath
 						withConstraints: [ :constraints | constraints height: 25 ])
 					withConstraints: [ :constraints | constraints width: 25 ])
-			withConstraints: [ :constraints | constraints height: 40 ];	
+			withConstraints: [ :constraints | constraints height: 40 ];		
+		add:
+			(SpBoxLayout newHorizontal add: 'Colormap' withConstraints: [ :constraints | constraints width: 100 ]; add: #droplistColormap; yourself)
+			withConstraints: [ :constraints | constraints height: 25 ];
+		add:
+			(SpBoxLayout newHorizontal)
+			withConstraints: [ :constraints | constraints height: 10 ];
+		add:
+			(SpBoxLayout newHorizontal add: #checkboxAutotag; yourself)
+			withConstraints: [ :constraints | constraints height: 25 ];
+	   add:
+			(SpBoxLayout newHorizontal)
+			withConstraints: [ :constraints | constraints height: 10 ];
 	   add:
 			(SpBoxLayout newHorizontal add: #feedbackLabel; yourself)
 			withConstraints: [ :constraints | constraints height: 20 ];
@@ -83,10 +97,14 @@ SargemtForm class >> open [
 
 { #category : #'as yet unclassified' }
 SargemtForm >> generateModel [
-	|projectName projectPath XMLPath CSVPath importer tagger|
+	|projectName projectPath XMLPath CSVPath colormapSelected colormapDict importer tagger|
 	
+	projectName := inputProjectName input text.
 	projectPath := inputProjectPath input text.
 	XMLPath := inputXMLPath input text.
+	CSVPath := inputCSVPath input text.
+	colormapSelected := droplistColormap selection selectedIndex.
+	colormapDict := (Dictionary newFrom: { 'RANDOM' -> '#666666' })
 	
     "Create model using XML and metamodels".
     importer := FamixCPreprocImporter new rootFolder: projectPath ; runOn: XMLPath.
@@ -98,17 +116,26 @@ SargemtForm >> generateModel [
 	tagger setModel: importer model.
 
 	"set tag colors and project name"
-	tagger setColorMap: (Dictionary newFrom: { 'TEST' -> '#34b4eb' }).
+	colormapSelected == 1
+	ifTrue: [ colormapDict := Dictionary newFrom: { 'AUD' -> '#f0e442'. 'OMP' -> '#ff0000'. 'HID' -> '#ea9999'. 'DEB' -> '#cccccc'. 'SGC' -> '#009e73'. 'LLR' -> '#00b816'. 'VFX' -> '#b8f100'. 'FES' -> '#6de900'. 'PLA' -> '#8288f1'. 'GMP' -> '#af93f8'. 'SDK' -> '#f8beff'. 'SKA' -> '#fce5cd'. 'PHY' -> '#fbbc04'. 'RES' -> '#efefef'. 'COR' -> '#4fc8e5'. 'EDI' -> '#56b4e9' } ].
+	
+	colormapSelected == 2
+	ifTrue: [ colormapDict :=Dictionary newFrom: { 'INNER' -> '#9c0f02'. 'OUTER' -> '#fcdad7'. 'PERIPHERAL' -> '#ffffff' } ].
+	
+	tagger setColorMap: colormapDict.
 	tagger setProjectName: projectName.
 
 	"set autotagging to false"
-	tagger setAutotagFolderContents: false.
+	tagger setAutotagFolderContents: checkboxAutotag state.
+	
+	"search the model for each path_from_root, tag file/folder with respective subsystem"
+   tagger initialize: CSVPath  recursive: true.
 
 ]
 
 { #category : #layout }
 SargemtForm >> initialExtent [
-	^ 520 @ 380
+	^ 520 @ 460
 ]
 
 { #category : #initialization }
@@ -177,11 +204,22 @@ SargemtForm >> initializeWidgets [
 	       (SpFilteringListPresenter new 
 	          items: feedbackMessages).		
 	"====="		
+	droplistColormap := self 
+	    instantiate: 
+	       (SpDropListPresenter new 
+				 help: 'Select a colormap';
+	          items: #('gregory1' 'emergent1' 'random')).	
+	"====="		
+	checkboxAutotag := self 
+	    instantiate: 
+	       (SpCheckBoxPresenter new label: 'Tag folder contents automatically?'; state: true).	
 	self focusOrder
 	   add: inputProjectName;
 		add: inputProjectPath;
 		add: inputCSVPath;
-		add: inputXMLPath.
+		add: inputXMLPath;
+		add: droplistColormap;
+		add: checkboxAutotag.
 ]
 
 { #category : #initialization }
