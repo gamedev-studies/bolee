@@ -13,10 +13,20 @@ BaselineOfSargemt >> baseline: spec [
 	<baseline>
 	spec for: #common do: [ 
         "Packages"
+	        self FamixCpp: spec.
 		self GroupTagger: spec.
 		self Roassal3Exporters: spec.
     ]
 
+]
+
+{ #category : #dependencies }
+BaselineOfSargemt >> FamixCpp: spec [
+
+	spec
+		baseline: 'FamixCpp'
+		with: [ spec repository: 'github://moosetechnology/Famix-Cpp:main' ]
+        
 ]
 
 { #category : #dependencies }
