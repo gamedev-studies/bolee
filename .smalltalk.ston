@@ -3,6 +3,7 @@ SmalltalkCISpec {
     SCIMetacelloLoadSpec {
       #baseline : 'Sargemt',
       #directory : 'src',
+      #load : [ 'default' ],
       #platforms : [ #pharo ],
       #onConflict : #useIncoming,
       #onUpgrade : #useIncoming
