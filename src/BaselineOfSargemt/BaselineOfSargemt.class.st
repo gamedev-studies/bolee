@@ -16,6 +16,9 @@ BaselineOfSargemt >> baseline: spec [
 	        self FamixCpp: spec.
 		self GroupTagger: spec.
 		self Roassal3Exporters: spec.
+
+		spec package: 'Sargemt'
+			with: [ spec requires: #( 'FamixCpp' 'GroupTagger' 'Roassal3Exporters' ) ];
     ]
 
 ]
