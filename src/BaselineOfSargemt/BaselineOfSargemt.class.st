@@ -46,3 +46,8 @@ BaselineOfSargemt >> Roassal3Exporters: spec [
 		with: [ spec repository: 'github://ObjectProfile/Roassal3Exporters' ]
         
 ]
+
+project
+	^ super project
+		loadType: #atomic;
+		yourself
