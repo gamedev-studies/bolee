@@ -47,7 +47,10 @@ BaselineOfSargemt >> Roassal3Exporters: spec [
         
 ]
 
-project
+{ #category : #accessing }
+BaselineOfSargemt >> project [
+
 	^ super project
 		loadType: #atomic;
 		yourself
+]
