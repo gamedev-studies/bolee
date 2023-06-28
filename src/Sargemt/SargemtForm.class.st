@@ -131,7 +131,8 @@ SargemtForm >> generateModel [
 	"search the model for each path_from_root, tag file/folder with respective subsystem"
    tagger initialize: CSVPath  recursive: true.
 
-	SargemtPostGenForm open.
+	btnGen disable.
+	SargemtPostGenForm open: importer model.
 
 ]
 

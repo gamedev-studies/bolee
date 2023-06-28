@@ -57,6 +57,13 @@ SargemtPostGenForm class >> open [
 	^ self new open
 ]
 
+{ #category : #protocol }
+SargemtPostGenForm class >> open: model [
+	| inst |
+	inst := self new setModel: model.
+	inst open.
+]
+
 { #category : #compute }
 SargemtPostGenForm >> countTags [
 ^((model select: [ :f | f name ~= '.'])  flatCollect: [ :x | x tags ]) asSet size asString
@@ -65,7 +72,7 @@ SargemtPostGenForm >> countTags [
 { #category : #search }
 SargemtPostGenForm >> findSource [
 | srcFolder |
-srcFolder := (self getTopLevelFolders flatCollect: [ :f | f children ]) select: [ :f | f name matchesRegex: 'src|source|Source' ].
+srcFolder := (self getTopLevelFolders flatCollect: [ :f | f children ]) select: [ :f | f name matchesRegex: 'src|source|Source|engine|Engine|code|Code' ].
 srcFolder isEmpty
 ifTrue: [ MiInspectorBrowser inspect: srcFolder ]
 ifFalse: [ MiInspectorBrowser inspect: srcFolder first ]
@@ -120,7 +127,6 @@ SargemtPostGenForm >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
 		initialExtent: self initialExtent.
-	model := MooseModel root last.
 	labelFileCount label: 'Files: ' , (model allWithType: FamixCPreprocHeaderFile) size asString.
 	labelFolderCount label: 'Folders: ' , (model allWithType: FamixCPreprocFolder) size asString.
 	labelIncludeCount label: 'Includes: ' , (model allWithType: FamixCPreprocInclude) size asString.
@@ -150,6 +156,11 @@ SargemtPostGenForm >> openDistMap [
 { #category : #inspecting }
 SargemtPostGenForm >> openTagBrowser [
 	MiTagBrowser open.
+]
+
+{ #category : #initialization }
+SargemtPostGenForm >> setModel: aModel [
+	model := aModel.
 ]
 
 { #category : #accessing }
