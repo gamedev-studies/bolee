@@ -165,5 +165,5 @@ SargemtPostGenForm >> setModel: aModel [
 
 { #category : #accessing }
 SargemtPostGenForm >> title [
-^'SARGE - What do you want to do now?'
+^'SARGE - What would you like to do now?'
 ]
