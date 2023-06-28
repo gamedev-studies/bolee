@@ -95,7 +95,7 @@ SargemtForm class >> open [
 	^ self new open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generate }
 SargemtForm >> generateModel [
 	|projectName projectPath XMLPath CSVPath colormapSelected colormapDict importer tagger|
 	
@@ -130,6 +130,8 @@ SargemtForm >> generateModel [
 	
 	"search the model for each path_from_root, tag file/folder with respective subsystem"
    tagger initialize: CSVPath  recursive: true.
+
+	SargemtPostGenForm open.
 
 ]
 
@@ -229,7 +231,7 @@ SargemtForm >> initializeWindow: aWindowPresenter [
 		initialExtent: self initialExtent
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #selection }
 SargemtForm >> selectCSVPath [
 	| reference lastPath |
 	lastPath := inputCSVPath input text.
@@ -241,7 +243,7 @@ SargemtForm >> selectCSVPath [
 		ifNotNil: [ inputCSVPath input text: reference ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #selection }
 SargemtForm >> selectProjectPath [
 	| reference lastPath |
 	lastPath := inputProjectPath input text.
@@ -255,7 +257,7 @@ SargemtForm >> selectProjectPath [
 		ifNotNil: [ inputProjectPath input text: reference pathString ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #selection }
 SargemtForm >> selectXMLPath [
 	| reference lastPath |
 	lastPath := inputXMLPath input text.
@@ -271,7 +273,7 @@ SargemtForm >> title [
 ^'SARGE - Software Architecture Recovery for Game Engines'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #validation }
 SargemtForm >> verifyPaths [
     |feedbackMessagesToShow|
     feedbackMessagesToShow := OrderedCollection new.
