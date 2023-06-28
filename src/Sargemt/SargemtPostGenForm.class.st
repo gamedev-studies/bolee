@@ -145,11 +145,15 @@ SargemtPostGenForm >> inspectFolders [
 
 { #category : #inspecting }
 SargemtPostGenForm >> openArchMap [	
+	"todo: remove the necessity of opening the tag browser with this browser"
+	MiTagBrowser open.
 	MiArchitecturalMapBrowser open.
 ]
 
 { #category : #inspecting }
 SargemtPostGenForm >> openDistMap [
+   "todo: remove the necessity of opening the tag browser with this browser"
+   MiTagBrowser open.
 	MiDMBrowser open.
 ]
 
