@@ -14,12 +14,11 @@ Metacello new
     load.
 ```
 
-Then run:
+## How to use
+To run Sarge-mt, open a Playground and execute:
 
 ```Smalltalk
 SargemtForm open.
 ```
 
-## Next features:
-- Block button while generating
-- Create form "what do you want to do now?": see stats about the model, open tag browser, open arch map
+Inform the name and path of the project you want to analyse. You will also need your subsystems identified in CSV format and an include graph in XML format. To create these files, you can use our [Game Engine Analyser](https://github.com/gamedev-studies/game-engine-analyser). After you input all the necessary information, the "generate" button will unlock and you can click it to generate the Moose model. After generation is done, Sarge-mt provides you with shortcuts for inspecting or visualising your model entities.
