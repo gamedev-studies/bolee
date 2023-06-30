@@ -71,10 +71,11 @@ SargemtPostGenForm >> countTags [
 
 { #category : #search }
 SargemtPostGenForm >> findSource [
-| srcFolder |
-srcFolder := (self getTopLevelFolders flatCollect: [ :f | f children ]) select: [ :f | f name matchesRegex: 'src|source|Source|engine|Engine|code|Code' ].
+| srcFolder topLevelFolders |
+topLevelFolders := self getTopLevelFolders.
+srcFolder := (topLevelFolders flatCollect: [ :f | f children ]) select: [ :f | f name matchesRegex: 'src|source|Source|engine|Engine|code|Code' ].
 srcFolder isEmpty
-ifTrue: [ MiInspectorBrowser inspect: srcFolder ]
+ifTrue: [ MiInspectorBrowser inspect: topLevelFolders ]
 ifFalse: [ MiInspectorBrowser inspect: srcFolder first ]
 
 
