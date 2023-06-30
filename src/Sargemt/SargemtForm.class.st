@@ -117,10 +117,10 @@ SargemtForm >> generateModel [
 
 	"set tag colors and project name"
 	colormapSelected == 1
-	ifTrue: [ colormapDict := Dictionary newFrom: { 'AUD' -> '#f0e442'. 'OMP' -> '#ff0000'. 'HID' -> '#ea9999'. 'DEB' -> '#cccccc'. 'SGC' -> '#009e73'. 'LLR' -> '#00b816'. 'VFX' -> '#b8f100'. 'FES' -> '#6de900'. 'PLA' -> '#8288f1'. 'GMP' -> '#af93f8'. 'SDK' -> '#f8beff'. 'SKA' -> '#fce5cd'. 'PHY' -> '#fbbc04'. 'RES' -> '#efefef'. 'COR' -> '#4fc8e5'. 'EDI' -> '#56b4e9' } ].
+	ifTrue: [ colormapDict := Dictionary newFrom: { 'AUD' -> '#f0e442'. 'OMP' -> '#ff0000'. 'HID' -> '#ea9999'. 'DEB' -> '#cccccc'. 'SGC' -> '#009e73'. 'LLR' -> '#00b816'. 'VFX' -> '#b8f100'. 'FES' -> '#6de900'. 'PLA' -> '#8288f1'. 'GMP' -> '#af93f8'. 'SDK' -> '#f8beff'. 'SKA' -> '#fce5cd'. 'PHY' -> '#fbbc04'. 'RES' -> '#efefef'. 'COR' -> '#4fc8e5'. 'EDI' -> '#56b4e9'. 'NIL' -> '#646464' } ].
 	
 	colormapSelected == 2
-	ifTrue: [ colormapDict :=Dictionary newFrom: { 'INNER' -> '#9c0f02'. 'OUTER' -> '#fcdad7'. 'PERIPHERAL' -> '#ffffff' } ].
+	ifTrue: [ colormapDict := Dictionary newFrom: { 'AUD' -> '#fcdad7'. 'OMP' -> '#ffffff'. 'HID' -> '#ffffff'. 'DEB' -> '#ffffff'. 'SGC' -> '#ffffff'. 'LLR' -> '#9c0f02'. 'VFX' -> '#ffffff'. 'FES' -> '#fcdad7'. 'PLA' -> '#ffffff'. 'GMP' -> '#fcdad7'. 'SDK' -> '#ffffff'. 'SKA' -> '#fcdad7'. 'PHY' -> '#fcdad7'. 'RES' -> '#9c0f02'. 'COR' -> '#9c0f02'. 'EDI' -> '#9c0f02'. 'NIL' -> '#646464' } ].
 	
 	tagger setColorMap: colormapDict.
 	tagger setProjectName: projectName.
