@@ -1,5 +1,5 @@
 # sarge-mt
-Software Architecture Recovery for Game Engines on Moose. Work in progress.
+Software Architecture Recovery for Game Engines on Moose.
 
 ## Installation
 On a Moose 10 image, execute the following code snippet in a Playground:
