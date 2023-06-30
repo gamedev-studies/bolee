@@ -14,6 +14,9 @@ Class {
 		'btnDistMap',
 		'btnArchMap'
 	],
+	#classInstVars : [
+		'selectedModel'
+	],
 	#category : #Sargemt
 }
 
@@ -22,7 +25,7 @@ SargemtPostGenForm class >> defaultLayout [
 	^ SpBoxLayout newVertical
 	   "vertical padding"
 		add: '' withConstraints: [ :constraints | constraints height: 10 ];  
-		add: ('Model generation successful for ' , MooseModel root last name) withConstraints: [ :constraints | constraints height: 20 ];  
+		add: ('Model generation successful for ' , selectedModel name) withConstraints: [ :constraints | constraints height: 20 ];  
 		add: (SpBoxLayout newHorizontal 
 				add: #labelFileCount; 
 				add: #labelFolderCount; 
@@ -60,6 +63,7 @@ SargemtPostGenForm class >> open [
 { #category : #protocol }
 SargemtPostGenForm class >> open: model [
 	| inst |
+	selectedModel := model.
 	inst := self new setModel: model.
 	inst open.
 ]
