@@ -39,9 +39,6 @@ SargemtPostGenForm class >> defaultLayout [
 			(SpBoxLayout newHorizontal add: #btnInspectFolders; yourself)
 			withConstraints: [ :constraints | constraints height: 40 ];
 		add:
-			(SpBoxLayout newHorizontal add: #btnFindSource; yourself)
-			withConstraints: [ :constraints | constraints height: 40 ];
-		add:
 			(SpBoxLayout newHorizontal add: #btnTagBrowser; yourself)
 			withConstraints: [ :constraints | constraints height: 40 ];
 		add:
@@ -75,14 +72,38 @@ SargemtPostGenForm >> countTags [
 
 { #category : #search }
 SargemtPostGenForm >> findSource [
-| srcFolder topLevelFolders |
-topLevelFolders := self getTopLevelFolders.
-srcFolder := (topLevelFolders flatCollect: [ :f | f children ]) select: [ :f | f name matchesRegex: 'src|source|Source|engine|Engine|code|Code' ].
-srcFolder isEmpty
-ifTrue: [ MiInspectorBrowser inspect: topLevelFolders ]
-ifFalse: [ MiInspectorBrowser inspect: srcFolder first ]
 
+	| srcFolder topLevelFolders |
+	
+	topLevelFolders := self getTopLevelFolders.
+	srcFolder := (topLevelFolders flatCollect: [ :f | f children ]) 
+		             select: [ :f | 
+			             f name matchesRegex:
+				             'src|source|Source|engine|Engine|code|Code' ].
+	srcFolder isEmpty
+		ifTrue: [ self findSource: topLevelFolders first children asMooseGroup level: 1 ]
+		ifFalse: [ MiInspectorBrowser inspect: srcFolder first ]
+]
 
+{ #category : #'as yet unclassified' }
+SargemtPostGenForm >> findSource: folderGroup level: lvl [
+	
+	| srcFolder hasChildren nextLvl|
+	nextLvl := lvl + 1.
+	Transcript show: lvl.
+	folderGroup do: [ :f | 
+		hasChildren := f allDeclaredProperties select: [ :each | 
+			               each name = 'children' ].
+
+		hasChildren isNotEmpty & lvl <= 3
+			ifTrue: [ 
+				srcFolder := (f children select: [ :g | 
+						             g name matchesRegex:
+							             'src|source|Source|engine|Engine|code|Code' ]).
+				srcFolder isEmpty
+					ifTrue: [ self findSource: srcFolder children asMooseGroup level: nextLvl ]
+					ifFalse: [ MiInspectorBrowser inspect: srcFolder asMooseGroup ] ]
+			ifFalse: [ MiInspectorBrowser inspect: self getTopLevelFolders ] ]
 ]
 
 { #category : #search }
@@ -92,14 +113,13 @@ SargemtPostGenForm >> getTopLevelFolders [
 
 { #category : #'morphic ui' }
 SargemtPostGenForm >> initialExtent [
-	^ 520 @ 350
+	^ 480 @ 300
 ]
 
 { #category : #initialization }
 SargemtPostGenForm >> initializePresenter [
 	btnInspectFiles action: [ self inspectFiles ].
 	btnInspectFolders action: [ self inspectFolders  ].
-	btnFindSource action: [ self findSource ].
 	btnTagBrowser action: [ self openTagBrowser ].
 	btnDistMap  action: [ self openDistMap ].
 	btnArchMap  action: [ self openArchMap ].
@@ -110,7 +130,6 @@ SargemtPostGenForm >> initializeWidgets [
 
 	btnInspectFiles := self newButton label: 'Inspect all files'.
 	btnInspectFolders := self newButton label: 'Inspect top level folders'.
-	btnFindSource := self newButton label: 'Inspect source folder'.
 	btnTagBrowser := self newButton label: 'Open tag browser'.
 	btnDistMap := self newButton label: 'Open distribution map'.
 	btnArchMap := self newButton label: 'Open architectural map'.
@@ -121,7 +140,6 @@ SargemtPostGenForm >> initializeWidgets [
 	self focusOrder
 	   add: btnInspectFiles;
 		add: btnInspectFolders;
-		add: btnFindSource;
 		add: btnTagBrowser;
 		add: btnDistMap;
 		add: btnArchMap.
