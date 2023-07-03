@@ -85,7 +85,7 @@ SargemtPostGenForm >> findSource [
 		ifFalse: [ MiInspectorBrowser inspect: srcFolder first ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #search }
 SargemtPostGenForm >> findSource: folderGroup level: lvl [
 	
 	| srcFolder hasChildren nextLvl|
