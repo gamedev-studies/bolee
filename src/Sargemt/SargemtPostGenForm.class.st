@@ -12,7 +12,8 @@ Class {
 		'labelTagCount',
 		'btnFindSource',
 		'btnDistMap',
-		'btnArchMap'
+		'btnArchMap',
+		'btnSubsystemCount'
 	],
 	#classInstVars : [
 		'selectedModel'
@@ -37,6 +38,9 @@ SargemtPostGenForm class >> defaultLayout [
 			withConstraints: [ :constraints | constraints height: 40 ];
 		add:
 			(SpBoxLayout newHorizontal add: #btnInspectFolders; yourself)
+			withConstraints: [ :constraints | constraints height: 40 ];
+		add:
+			(SpBoxLayout newHorizontal add: #btnSubsystemCount; yourself)
 			withConstraints: [ :constraints | constraints height: 40 ];
 		add:
 			(SpBoxLayout newHorizontal add: #btnTagBrowser; yourself)
@@ -65,9 +69,15 @@ SargemtPostGenForm class >> open: model [
 	inst open.
 ]
 
+{ #category : #'as yet unclassified' }
+SargemtPostGenForm >> countSubsystems [
+	SargemtSubsystemCount open: model.
+		
+]
+
 { #category : #compute }
 SargemtPostGenForm >> countTags [
-^((model select: [ :f | f name ~= '.'])  flatCollect: [ :x | x tags ]) asSet size asString
+^(((model select: [ :f | f name ~= '.'])  flatCollect: [ :x | x tags ]) select: [ :f | f name matchesRegex: '^((?!OTH).)*$' .]) asSet size asString
 ]
 
 { #category : #search }
@@ -113,13 +123,14 @@ SargemtPostGenForm >> getTopLevelFolders [
 
 { #category : #'morphic ui' }
 SargemtPostGenForm >> initialExtent [
-	^ 480 @ 300
+	^ 480 @ 340
 ]
 
 { #category : #initialization }
 SargemtPostGenForm >> initializePresenter [
 	btnInspectFiles action: [ self inspectFiles ].
 	btnInspectFolders action: [ self inspectFolders  ].
+	btnSubsystemCount action: [ self countSubsystems  ].
 	btnTagBrowser action: [ self openTagBrowser ].
 	btnDistMap  action: [ self openDistMap ].
 	btnArchMap  action: [ self openArchMap ].
@@ -129,6 +140,7 @@ SargemtPostGenForm >> initializePresenter [
 SargemtPostGenForm >> initializeWidgets [
 
 	btnInspectFiles := self newButton label: 'Inspect all files'.
+	btnSubsystemCount := self newButton label: 'View file count by subsystem'.
 	btnInspectFolders := self newButton label: 'Inspect top level folders'.
 	btnTagBrowser := self newButton label: 'Open tag browser'.
 	btnDistMap := self newButton label: 'Open distribution map'.
@@ -140,6 +152,7 @@ SargemtPostGenForm >> initializeWidgets [
 	self focusOrder
 	   add: btnInspectFiles;
 		add: btnInspectFolders;
+		add: btnSubsystemCount;
 		add: btnTagBrowser;
 		add: btnDistMap;
 		add: btnArchMap.
