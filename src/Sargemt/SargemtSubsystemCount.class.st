@@ -37,6 +37,7 @@ SargemtSubsystemCount class >> open: model [
 { #category : #'as yet unclassified' }
 SargemtSubsystemCount >> countSubsystems [
    |firstD secondD allTags tagsFound|
+   model := (model allWithType: FamixCPreprocHeaderFile) asMooseGroup.
 	firstD := OrderedDictionary new.
 	secondD := OrderedDictionary new.
 	allTags := (((model select: [ :f | f name ~= '.' ]) flatCollect: [ :x | 
@@ -49,7 +50,6 @@ SargemtSubsystemCount >> countSubsystems [
 			at:  tagsFound size 
 			put: tag].
 		firstD keys sorted do: [ :item | secondD at: (firstD at: item) put: item  ].
-		
 	^secondD.
 ]
 
