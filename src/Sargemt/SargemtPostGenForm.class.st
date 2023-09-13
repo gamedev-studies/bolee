@@ -16,7 +16,8 @@ Class {
 		'btnFindSource',
 		'btnDistMap',
 		'btnArchMap',
-		'btnSubsystemCount'
+		'btnSubsystemCount',
+		'btnSaveTagDeps'
 	],
 	#classInstVars : [
 		'selectedModel'
@@ -44,6 +45,9 @@ SargemtPostGenForm class >> defaultLayout [
 			withConstraints: [ :constraints | constraints height: 40 ];
 		add:
 			(SpBoxLayout newHorizontal add: #btnSubsystemCount; yourself)
+			withConstraints: [ :constraints | constraints height: 40 ];
+		add:
+			(SpBoxLayout newHorizontal add: #btnSaveTagDeps; yourself)
 			withConstraints: [ :constraints | constraints height: 40 ];
 		add:
 			(SpBoxLayout newHorizontal add: #btnTagBrowser; yourself)
@@ -126,7 +130,7 @@ SargemtPostGenForm >> getTopLevelFolders [
 
 { #category : #'morphic ui' }
 SargemtPostGenForm >> initialExtent [
-	^ 480 @ 340
+	^ 480 @ 380
 ]
 
 { #category : #initialization }
@@ -134,6 +138,7 @@ SargemtPostGenForm >> initializePresenter [
 	btnInspectFiles action: [ self inspectFiles ].
 	btnInspectFolders action: [ self inspectFolders  ].
 	btnSubsystemCount action: [ self countSubsystems  ].
+	btnSaveTagDeps action: [ self saveTagDeps  ].
 	btnTagBrowser action: [ self openTagBrowser ].
 	btnDistMap  action: [ self openDistMap ].
 	btnArchMap  action: [ self openArchMap ].
@@ -144,6 +149,7 @@ SargemtPostGenForm >> initializeWidgets [
 
 	btnInspectFiles := self newButton label: 'Inspect all files'.
 	btnSubsystemCount := self newButton label: 'View file count by subsystem'.
+	btnSaveTagDeps := self newButton label: 'Save subsystem dependency graph'.
 	btnInspectFolders := self newButton label: 'Inspect top level folders'.
 	btnTagBrowser := self newButton label: 'Open tag browser'.
 	btnDistMap := self newButton label: 'Open distribution map'.
@@ -199,6 +205,14 @@ SargemtPostGenForm >> openDistMap [
 { #category : #inspecting }
 SargemtPostGenForm >> openTagBrowser [
 	MiTagBrowser open.
+]
+
+{ #category : #'as yet unclassified' }
+SargemtPostGenForm >> saveTagDeps [
+    |solver engineName|
+    solver := SargemtTagDepSolver new.
+    engineName := model tags first name splitOn: '-'.
+    solver run: model engineName: engineName first.
 ]
 
 { #category : #initialization }
