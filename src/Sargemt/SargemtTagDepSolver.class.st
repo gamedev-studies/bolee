@@ -22,7 +22,7 @@ SargemtTagDepSolver >> buildDotFile: listOfDicts [
 		sourceTag := sourceTag copyReplaceAll: (engineName,'-') with: ''. 
 		dependedTags do: [ :tag | 
 			targetTag := tag copyReplaceAll: (engineName,'-') with: ''. 
-			dotFileLines add: sourceTag,'->',targetTag,(Character cr asString). ]
+			dotFileLines add: '"',sourceTag,'"->"',targetTag,'"',(Character cr asString). ]
 	].
    dotFileLines add: '}'.
 	^dotFileLines.
@@ -45,7 +45,7 @@ SargemtTagDepSolver >> run: model engineName: name [
 { #category : #building }
 SargemtTagDepSolver >> saveSolverResult: list [
 |file|
-file := (engineName,'.dot') asFileReference.
+file := (engineName asLowercase,'.dot') asFileReference.
 file writeStreamDo: [ :stream | stream << list ].
 GrowlMorph openWithLabel: 'Information' contents: 'Saved ', file asAbsolute asString.
 
