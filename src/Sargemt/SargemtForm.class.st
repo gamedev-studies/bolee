@@ -1,3 +1,6 @@
+"
+This form allows you to pass a .csv and a .xml file to produce a Moose model.
+"
 Class {
 	#name : #SargemtForm,
 	#superclass : #SpPresenter,

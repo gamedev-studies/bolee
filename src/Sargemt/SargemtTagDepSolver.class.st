@@ -1,3 +1,6 @@
+"
+This class does tag dependency resolution. It saves a .dot file equivalent to the associations between tags you see in the Architectural Map.
+"
 Class {
 	#name : #SargemtTagDepSolver,
 	#superclass : #Object,
@@ -44,6 +47,7 @@ SargemtTagDepSolver >> saveSolverResult: list [
 |file|
 file := (engineName,'.dot') asFileReference.
 file writeStreamDo: [ :stream | stream << list ].
+GrowlMorph openWithLabel: 'Information' contents: 'Saved ', file asAbsolute asString.
 
 ]
 

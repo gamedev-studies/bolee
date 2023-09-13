@@ -1,3 +1,6 @@
+"
+This form is shown after Moose model generation and lets you visualize and query the model in different ways.
+"
 Class {
 	#name : #SargemtPostGenForm,
 	#superclass : #SpPresenter,

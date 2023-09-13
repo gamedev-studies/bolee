@@ -1,3 +1,6 @@
+"
+This form counts files on each subsystem and shows it to you.
+"
 Class {
 	#name : #SargemtSubsystemCount,
 	#superclass : #SpPresenter,
