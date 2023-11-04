@@ -1,4 +1,4 @@
-# bolee
+# Bolée
 Bolée (pronounced BO-ley) is a tool for Software Architecture Recovery on Moose. Previously called "Sargemt", source code renaming is in progress.
 
 ## Installation
