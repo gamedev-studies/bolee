@@ -69,16 +69,17 @@ SargemtSubsystemCount >> initializePresenter [
 
 { #category : #initialization }
 SargemtSubsystemCount >> initializeWindow: aWindowPresenter [
-   |sublist|	
+   |sublist dic|
 	sublist := self countSubsystems.
+	dic := sublist asDictionary.
 	sublist isNotNil ifTrue: [ 
 		table1
 			addColumn:
 				(SpStringTableColumn title: 'Subsystem' evaluated: #name);
 			addColumn: (SpStringTableColumn
 					 title: 'File count'
-					  evaluated: [ :item | sublist at: item ]);
-			items: sublist keys;
+					 evaluated: [ :item | dic at: item ]);
+			       items: (sublist collect: #key);
 			beResizable ].
 		
 	aWindowPresenter
