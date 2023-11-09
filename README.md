@@ -1,5 +1,5 @@
-# sarge-mt
-Software Architecture Recovery for Game Engines on Moose.
+# Bolée
+Bolée (pronounced BO-ley) is a tool for Software Architecture Recovery on Moose. Previously called "Sargemt", source code renaming is in progress.
 
 ## Installation
 On a Moose 10 image, execute the following code snippet in a Playground:
@@ -7,7 +7,7 @@ On a Moose 10 image, execute the following code snippet in a Playground:
 ```Smalltalk
 Metacello new
     baseline: 'Sargemt';
-    repository: 'github://gamedev-studies/sarge-mt:main';
+    repository: 'github://gamedev-studies/bolee:main';
     onConflict: [ :ex | ex useIncoming ];
     onUpgrade: [ :ex | ex useIncoming ];
     onDowngrade: [ :ex | ex useLoaded ];
@@ -15,7 +15,7 @@ Metacello new
 ```
 
 ## How to use
-To run Sarge-mt, open a Playground and execute:
+To run Bolée, open a Playground and execute:
 
 ```Smalltalk
 SargemtForm open.
