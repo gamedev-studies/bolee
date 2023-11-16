@@ -1,14 +1,14 @@
 "
-Baseline of Sargemt
+Baseline of Bolee
 "
 Class {
-	#name : #BaselineOfSargemt,
+	#name : #BaselineOfBolee,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfSargemt
+	#category : #BaselineOfBolee
 }
 
 { #category : #baselines }
-BaselineOfSargemt >> baseline: spec [
+BaselineOfBolee >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ 
@@ -17,14 +17,14 @@ BaselineOfSargemt >> baseline: spec [
 		self GroupTagger: spec.
 		self Roassal3Exporters: spec.
 
-		spec package: 'Sargemt'
+		spec package: 'Bolee'
 			with: [ spec requires: #( 'FamixCpp' 'GroupTagger' 'Roassal3Exporters' ) ].
     ]
 
 ]
 
 { #category : #dependencies }
-BaselineOfSargemt >> FamixCpp: spec [
+BaselineOfBolee >> FamixCpp: spec [
 
 	spec
 		baseline: 'FamixCpp'
@@ -33,7 +33,7 @@ BaselineOfSargemt >> FamixCpp: spec [
 ]
 
 { #category : #dependencies }
-BaselineOfSargemt >> GroupTagger: spec [
+BaselineOfBolee >> GroupTagger: spec [
 
 	spec
 		baseline: 'GroupTagger'
@@ -42,7 +42,7 @@ BaselineOfSargemt >> GroupTagger: spec [
 ]
 
 { #category : #dependencies }
-BaselineOfSargemt >> Roassal3Exporters: spec [
+BaselineOfBolee >> Roassal3Exporters: spec [
 
 	spec
 		baseline: 'Roassal3Exporters'
@@ -51,7 +51,7 @@ BaselineOfSargemt >> Roassal3Exporters: spec [
 ]
 
 { #category : #accessing }
-BaselineOfSargemt >> project [
+BaselineOfBolee >> project [
 
 	^ super project
 		loadType: #atomic;

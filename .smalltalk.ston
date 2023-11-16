@@ -1,7 +1,7 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'Sargemt',
+      #baseline : 'Bolee',
       #directory : 'src',
       #load : [ 'default' ],
       #platforms : [ #pharo ],

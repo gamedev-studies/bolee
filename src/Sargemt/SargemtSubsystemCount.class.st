@@ -2,7 +2,7 @@
 This form counts files on each subsystem and shows it to you.
 "
 Class {
-	#name : #SargemtSubsystemCount,
+	#name : #BoleeSubsystemCount,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'table1',
@@ -11,11 +11,11 @@ Class {
 	#classInstVars : [
 		'selectedModel'
 	],
-	#category : #Sargemt
+	#category : #Bolee
 }
 
 { #category : #layout }
-SargemtSubsystemCount class >> defaultLayout [
+BoleeSubsystemCount class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #table1;
@@ -23,14 +23,14 @@ SargemtSubsystemCount class >> defaultLayout [
 ]
 
 { #category : #examples }
-SargemtSubsystemCount class >> open [
+BoleeSubsystemCount class >> open [
 	<example>
 	
 	^ self new open
 ]
 
 { #category : #protocol }
-SargemtSubsystemCount class >> open: model [
+BoleeSubsystemCount class >> open: model [
 	| inst |
 	selectedModel := model.
 	inst := self new setModel: model.
@@ -38,7 +38,7 @@ SargemtSubsystemCount class >> open: model [
 ]
 
 { #category : #counting }
-SargemtSubsystemCount >> countSubsystems [
+BoleeSubsystemCount >> countSubsystems [
    |firstD secondD allTags tagsFound|
    model := (model allWithType: FamixCPreprocHeaderFile) asMooseGroup.
 	firstD := OrderedDictionary new.
@@ -58,18 +58,18 @@ SargemtSubsystemCount >> countSubsystems [
 ]
 
 { #category : #'morphic ui' }
-SargemtSubsystemCount >> initialExtent [
+BoleeSubsystemCount >> initialExtent [
 	^ 480 @ 340
 ]
 
 { #category : #initialization }
-SargemtSubsystemCount >> initializePresenter [
+BoleeSubsystemCount >> initializePresenter [
 	table1 := self newTable.
 
 ]
 
 { #category : #initialization }
-SargemtSubsystemCount >> initializeWindow: aWindowPresenter [
+BoleeSubsystemCount >> initializeWindow: aWindowPresenter [
    |sublist dic|
 	sublist := self countSubsystems.
 	dic := sublist asDictionary.
@@ -89,11 +89,11 @@ SargemtSubsystemCount >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #initialization }
-SargemtSubsystemCount >> setModel: aModel [
+BoleeSubsystemCount >> setModel: aModel [
 	model := aModel.
 ]
 
 { #category : #accessing }
-SargemtSubsystemCount >> title [
-^'SARGE - File count by subsystem'
+BoleeSubsystemCount >> title [
+^'Bolée - File count by subsystem'
 ]

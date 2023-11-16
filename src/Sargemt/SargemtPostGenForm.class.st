@@ -2,7 +2,7 @@
 This form is shown after Moose model generation and lets you visualize and query the model in different ways.
 "
 Class {
-	#name : #SargemtPostGenForm,
+	#name : #BoleePostGenForm,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'btnInspectFiles',
@@ -22,11 +22,11 @@ Class {
 	#classInstVars : [
 		'selectedModel'
 	],
-	#category : #Sargemt
+	#category : #Bolee
 }
 
 { #category : #layout }
-SargemtPostGenForm class >> defaultLayout [
+BoleePostGenForm class >> defaultLayout [
 	^ SpBoxLayout newVertical
 	   "vertical padding"
 		add: '' withConstraints: [ :constraints | constraints height: 10 ];  
@@ -62,14 +62,14 @@ SargemtPostGenForm class >> defaultLayout [
 ]
 
 { #category : #examples }
-SargemtPostGenForm class >> open [
+BoleePostGenForm class >> open [
 	<example>
 	
 	^ self new open
 ]
 
 { #category : #protocol }
-SargemtPostGenForm class >> open: model [
+BoleePostGenForm class >> open: model [
 	| inst |
 	selectedModel := model.
 	inst := self new setModel: model.
@@ -77,18 +77,18 @@ SargemtPostGenForm class >> open: model [
 ]
 
 { #category : #'as yet unclassified' }
-SargemtPostGenForm >> countSubsystems [
-	SargemtSubsystemCount open: model.
+BoleePostGenForm >> countSubsystems [
+	BoleeSubsystemCount open: model.
 		
 ]
 
 { #category : #compute }
-SargemtPostGenForm >> countTags [
+BoleePostGenForm >> countTags [
 ^(((model select: [ :f | f name ~= '.'])  flatCollect: [ :x | x tags ]) select: [ :f | f name matchesRegex: '^((?!OTH).)*$' .]) asSet size asString
 ]
 
 { #category : #search }
-SargemtPostGenForm >> findSource [
+BoleePostGenForm >> findSource [
 
 	| srcFolder topLevelFolders |
 	
@@ -103,7 +103,7 @@ SargemtPostGenForm >> findSource [
 ]
 
 { #category : #search }
-SargemtPostGenForm >> findSource: folderGroup level: lvl [
+BoleePostGenForm >> findSource: folderGroup level: lvl [
 	
 	| srcFolder hasChildren nextLvl|
 	nextLvl := lvl + 1.
@@ -124,17 +124,17 @@ SargemtPostGenForm >> findSource: folderGroup level: lvl [
 ]
 
 { #category : #search }
-SargemtPostGenForm >> getTopLevelFolders [
+BoleePostGenForm >> getTopLevelFolders [
 ^(((model allWithType: FamixCPreprocFolder) select: [ :f | f name ~= '.']) select: [ :f | f parentFolder name = '.']) asMooseGroup
 ]
 
 { #category : #'morphic ui' }
-SargemtPostGenForm >> initialExtent [
+BoleePostGenForm >> initialExtent [
 	^ 480 @ 380
 ]
 
 { #category : #initialization }
-SargemtPostGenForm >> initializePresenter [
+BoleePostGenForm >> initializePresenter [
 	btnInspectFiles action: [ self inspectFiles ].
 	btnInspectFolders action: [ self inspectFolders  ].
 	btnSubsystemCount action: [ self countSubsystems  ].
@@ -145,7 +145,7 @@ SargemtPostGenForm >> initializePresenter [
 ]
 
 { #category : #initialization }
-SargemtPostGenForm >> initializeWidgets [
+BoleePostGenForm >> initializeWidgets [
 
 	btnInspectFiles := self newButton label: 'Inspect all files'.
 	btnSubsystemCount := self newButton label: 'View file count by subsystem'.
@@ -168,7 +168,7 @@ SargemtPostGenForm >> initializeWidgets [
 ]
 
 { #category : #initialization }
-SargemtPostGenForm >> initializeWindow: aWindowPresenter [
+BoleePostGenForm >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
 		initialExtent: self initialExtent.
@@ -179,48 +179,48 @@ SargemtPostGenForm >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #inspecting }
-SargemtPostGenForm >> inspectFiles [
+BoleePostGenForm >> inspectFiles [
 	MiInspectorBrowser inspect: (model allWithType: FamixCPreprocHeaderFile) asMooseGroup.
 ]
 
 { #category : #inspecting }
-SargemtPostGenForm >> inspectFolders [
+BoleePostGenForm >> inspectFolders [
 	MiInspectorBrowser inspect:  self getTopLevelFolders.
 ]
 
 { #category : #inspecting }
-SargemtPostGenForm >> openArchMap [	
+BoleePostGenForm >> openArchMap [	
 	"todo: remove the necessity of opening the tag browser with this browser"
 	MiTagBrowser open.
 	MiArchitecturalMapBrowser open.
 ]
 
 { #category : #inspecting }
-SargemtPostGenForm >> openDistMap [
+BoleePostGenForm >> openDistMap [
    "todo: remove the necessity of opening the tag browser with this browser"
    MiTagBrowser open.
 	MiDMBrowser open.
 ]
 
 { #category : #inspecting }
-SargemtPostGenForm >> openTagBrowser [
+BoleePostGenForm >> openTagBrowser [
 	MiTagBrowser open.
 ]
 
 { #category : #'as yet unclassified' }
-SargemtPostGenForm >> saveTagDeps [
+BoleePostGenForm >> saveTagDeps [
     |solver engineName|
-    solver := SargemtTagDepSolver new.
+    solver := BoleeTagDepSolver new.
     engineName := model tags first name splitOn: '-'.
     solver run: model engineName: engineName first.
 ]
 
 { #category : #initialization }
-SargemtPostGenForm >> setModel: aModel [
+BoleePostGenForm >> setModel: aModel [
 	model := aModel.
 ]
 
 { #category : #accessing }
-SargemtPostGenForm >> title [
-^'SARGE - What would you like to do now?'
+BoleePostGenForm >> title [
+^'Bolée - What would you like to do now?'
 ]

@@ -2,17 +2,17 @@
 This class does tag dependency resolution. It saves a .dot file equivalent to the associations between tags you see in the Architectural Map.
 "
 Class {
-	#name : #SargemtTagDepSolver,
+	#name : #BoleeTagDepSolver,
 	#superclass : #Object,
 	#instVars : [
 		'selectedModel',
 		'engineName'
 	],
-	#category : #Sargemt
+	#category : #Bolee
 }
 
 { #category : #building }
-SargemtTagDepSolver >> buildDotFile: listOfDicts [
+BoleeTagDepSolver >> buildDotFile: listOfDicts [
    |sourceTag dependedTags dotFileLines targetTag|
    dotFileLines := OrderedCollection new.
    dotFileLines add: 'digraph "source tree" {',(Character cr asString).
@@ -30,7 +30,7 @@ SargemtTagDepSolver >> buildDotFile: listOfDicts [
 ]
 
 { #category : #running }
-SargemtTagDepSolver >> run: model engineName: name [
+BoleeTagDepSolver >> run: model engineName: name [
 	| tagNames taggedEntities result |
 	selectedModel := model.
 	self setEngineName: name.
@@ -43,7 +43,7 @@ SargemtTagDepSolver >> run: model engineName: name [
 ]
 
 { #category : #building }
-SargemtTagDepSolver >> saveSolverResult: list [
+BoleeTagDepSolver >> saveSolverResult: list [
 |file|
 file := (engineName asLowercase,'.dot') asFileReference.
 file writeStreamDo: [ :stream | stream << list ].
@@ -52,7 +52,7 @@ GrowlMorph openWithLabel: 'Information' contents: 'Saved ', file asAbsolute asSt
 ]
 
 { #category : #building }
-SargemtTagDepSolver >> searchTagDeps: entities tag: aTag [
+BoleeTagDepSolver >> searchTagDeps: entities tag: aTag [
 
 	| isOfATag allOutOpposites allOutOppositesWithTags oppTags resultDict|
 	isOfATag := entities select: [ :f | 
@@ -69,6 +69,6 @@ SargemtTagDepSolver >> searchTagDeps: entities tag: aTag [
 ]
 
 { #category : #initialization }
-SargemtTagDepSolver >> setEngineName: name [
+BoleeTagDepSolver >> setEngineName: name [
 	engineName := name.
 ]

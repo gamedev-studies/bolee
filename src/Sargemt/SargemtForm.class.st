@@ -2,7 +2,7 @@
 This form allows you to pass a .csv and a .xml file to produce a Moose model.
 "
 Class {
-	#name : #SargemtForm,
+	#name : #BoleeForm,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'menu',
@@ -25,11 +25,11 @@ Class {
 		'droplistColormap',
 		'checkboxAutotag'
 	],
-	#category : #Sargemt
+	#category : #Bolee
 }
 
 { #category : #layout }
-SargemtForm class >> defaultLayout [
+BoleeForm class >> defaultLayout [
 	^ SpBoxLayout newVertical
 	   "vertical padding"
 		add: '' withConstraints: [ :constraints | constraints height: 10 ]; 
@@ -92,14 +92,14 @@ SargemtForm class >> defaultLayout [
 ]
 
 { #category : #examples }
-SargemtForm class >> open [
+BoleeForm class >> open [
 	<example>
 	
 	^ self new open
 ]
 
 { #category : #generate }
-SargemtForm >> generateModel [
+BoleeForm >> generateModel [
 	|projectName projectPath XMLPath CSVPath colormapSelected colormapDict importer tagger|
 	
 	projectName := inputProjectName input text.
@@ -135,17 +135,17 @@ SargemtForm >> generateModel [
    tagger initialize: CSVPath  recursive: true.
 
 	btnGen disable.
-	SargemtPostGenForm open: importer model.
+	BoleePostGenForm open: importer model.
 
 ]
 
 { #category : #layout }
-SargemtForm >> initialExtent [
+BoleeForm >> initialExtent [
 	^ 520 @ 460
 ]
 
 { #category : #initialization }
-SargemtForm >> initializePresenter [
+BoleeForm >> initializePresenter [
    self verifyPaths.
 	btnProjectPath  action: [ self selectProjectPath ].
 	btnCSVPath action: [ self selectCSVPath  ].
@@ -158,7 +158,7 @@ SargemtForm >> initializePresenter [
 ]
 
 { #category : #initialization }
-SargemtForm >> initializeWidgets [
+BoleeForm >> initializeWidgets [
    feedbackMessages := OrderedCollection new.
 	inputProjectName := self
 		instantiate:
@@ -229,14 +229,14 @@ SargemtForm >> initializeWidgets [
 ]
 
 { #category : #initialization }
-SargemtForm >> initializeWindow: aWindowPresenter [
+BoleeForm >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
 		initialExtent: self initialExtent
 ]
 
 { #category : #selection }
-SargemtForm >> selectCSVPath [
+BoleeForm >> selectCSVPath [
 	| reference lastPath |
 	lastPath := inputCSVPath input text.
 	lastPath isEmpty 
@@ -248,7 +248,7 @@ SargemtForm >> selectCSVPath [
 ]
 
 { #category : #selection }
-SargemtForm >> selectProjectPath [
+BoleeForm >> selectProjectPath [
 	| reference lastPath |
 	lastPath := inputProjectPath input text.
 	lastPath isEmpty 
@@ -262,7 +262,7 @@ SargemtForm >> selectProjectPath [
 ]
 
 { #category : #selection }
-SargemtForm >> selectXMLPath [
+BoleeForm >> selectXMLPath [
 	| reference lastPath |
 	lastPath := inputXMLPath input text.
 	lastPath isEmpty 
@@ -273,12 +273,12 @@ SargemtForm >> selectXMLPath [
 ]
 
 { #category : #initialization }
-SargemtForm >> title [
-^'SARGE - Software Architecture Recovery for Game Engines'
+BoleeForm >> title [
+^'Bolée - Software Architecture Recovery for Everyone'
 ]
 
 { #category : #validation }
-SargemtForm >> verifyPaths [
+BoleeForm >> verifyPaths [
     |feedbackMessagesToShow|
     feedbackMessagesToShow := OrderedCollection new.
     inputProjectName input text isEmpty
