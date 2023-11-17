@@ -1,6 +1,5 @@
 # Bolée
-Bolée (pronounced BO-ley) is a tool for Software Architecture Recovery on Moose. Formerly called "SARGE - Software Architecture Recovery for Game Engines", its name was changed to reflect its flexibility: it can be used for architectural recovery of ANY kind of system supported, as long as you can provide:
-
+Bolée (pronounced BO-ley) is a tool for Software Architecture Recovery on Moose. Formerly called "SARGE - Software Architecture Recovery for Game Engines", its name was changed to reflect its flexibility. It can be used for architectural recovery of ANY kind of system as long as you can provide:
 - An XML file describing the dependencies
 - A CSV file describing subsystem division
 
