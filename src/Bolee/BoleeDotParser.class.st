@@ -19,7 +19,7 @@ BoleeDotParser >> createModelRelationships: lines [
 
 { #category : #'as yet unclassified' }
 BoleeDotParser >> createModelStructure: lines [
-
+   "a"
 	| model myRoot paths parts lastParent tem niu |
 	model := FamixCPreprocModel new.
 	myRoot := FamixCPreprocFolder new name: '.'.
@@ -67,6 +67,7 @@ BoleeDotParser >> removeStyling: text [
 	lines := lines select: [ :item | item includesSubstring: '->' ].
 	cutPos := (lines at: 1) findString: '[pos'.
 	(lines at: 1) first: cutPos - 1
+	"a"
 ]
 
 { #category : #running }
