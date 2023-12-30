@@ -9,7 +9,8 @@ Class {
 		'model',
 		'separator',
 		'modelRootFolder',
-		'installAfterGeneration'
+		'installAfterGeneration',
+		'saveAfterGeneration'
 	],
 	#category : #Bolee
 }
@@ -162,10 +163,29 @@ BoleeDotParser >> run: path encoding: encoding [
 	"create relationships between files"
 	pathPairs do: [ :pair | self createModelRelationships: pair ].
 	
-	"install after generation if set to do so"
+	"install/save after generation if set to do so"
 	installAfterGeneration ifTrue: [ model installWithCache: false ].
-
+	saveAfterGeneration ifTrue: [ self saveDot: lines ].
+	
 	^ model
+]
+
+{ #category : #accessing }
+BoleeDotParser >> saveAfterGeneration: value [
+
+	saveAfterGeneration := value
+]
+
+{ #category : #formatting }
+BoleeDotParser >> saveDot: lines [
+	|output fileRef header bottom |
+	header := 'digraph D {'.
+	bottom := (Character cr asString),'}'.
+	fileRef := ((model name),'.dot') asFileReference.
+	output := '' join: lines.
+	output := header,output,bottom.
+   fileRef writeStreamDo: [:stream | stream nextPutAll: output].
+	GrowlMorph openWithLabel: 'Information' contents: 'Saved ', fileRef asAbsolute asString. 
 ]
 
 { #category : #generating }
