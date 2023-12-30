@@ -76,7 +76,7 @@ BoleePostGenForm class >> open: model [
 	inst open.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #search }
 BoleePostGenForm >> countSubsystems [
 	BoleeSubsystemCount open: model.
 		
@@ -207,7 +207,7 @@ BoleePostGenForm >> openTagBrowser [
 	MiTagBrowser open.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BoleePostGenForm >> saveTagDeps [
     |solver engineName|
     solver := BoleeTagDepSolver new.

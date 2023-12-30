@@ -10,7 +10,7 @@ Class {
 	#category : #Bolee
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #searching }
 BoleeEntitySearcher >> collectAllFilesIn: container [
 
 	| foldersFound |
@@ -27,7 +27,7 @@ BoleeEntitySearcher >> collectAllFilesIn: container [
 	^ (searchResults flatCollect: [ :item | item ]) asSet
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #searching }
 BoleeEntitySearcher >> collectAllFilesIn: container byName: aName [
 
 	| foldersFound |

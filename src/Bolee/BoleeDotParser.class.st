@@ -8,7 +8,8 @@ Class {
 		'basePath',
 		'model',
 		'separator',
-		'modelRootFolder'
+		'modelRootFolder',
+		'installAfterGeneration'
 	],
 	#category : #Bolee
 }
@@ -24,7 +25,7 @@ BoleeDotParser >> cleanLinePath: path [
 	^ basePath,((path copyReplaceAll: '"' with: '') trimBoth). 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 BoleeDotParser >> createEntity: part lastParent: lastParent type: entityType [
 
 	| entitiesWithName newEntity |
@@ -41,12 +42,27 @@ BoleeDotParser >> createEntity: part lastParent: lastParent type: entityType [
 	^ newEntity
 ]
 
-{ #category : #'as yet unclassified' }
-BoleeDotParser >> createModelRelationships: lines [
-^ model
+{ #category : #generating }
+BoleeDotParser >> createModelRelationships: paths [
+
+	| searcher allFiles sourcePath targetPath sourceFile targetFile |
+	searcher := BoleeEntitySearcher new.
+	allFiles := searcher collectAllFilesIn: modelRootFolder.
+	sourcePath := './' , (paths at: 1).
+	targetPath := './' , (paths at: 2).
+	sourceFile := allFiles select: [ :file | file fullName equalsTo: sourcePath ].
+	targetFile := allFiles select: [ :file | file fullName equalsTo: targetPath ].
+
+	(sourceFile isNotEmpty and: targetFile isNotEmpty) ifTrue: [
+		FamixCPreprocInclude new
+			mooseModel: model;
+			included: sourceFile anyOne;
+			includedBy: targetFile anyOne ].
+
+	^ model
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 BoleeDotParser >> createModelStructure: paths [
 
 	| parts lastParent entityType |
@@ -63,7 +79,7 @@ BoleeDotParser >> createModelStructure: paths [
 	model
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BoleeDotParser >> determineType: part [
 
 	^ (part includesSubstring: '.')
@@ -71,7 +87,7 @@ BoleeDotParser >> determineType: part [
 		  ifFalse: [ ^ FamixCPreprocFolder ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #searching }
 BoleeDotParser >> getPathsFromLine: line [
 
 	| parts result |
@@ -83,11 +99,16 @@ BoleeDotParser >> getPathsFromLine: line [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #searching }
 BoleeDotParser >> getSeparator: rawText [
 	| search |
 	search := rawText findString: '/'.
 	search > 0 ifTrue: [ ^ '/' ] ifFalse: [ ^ '\' ].
+]
+
+{ #category : #accessing }
+BoleeDotParser >> installAfterGeneration: value [
+	installAfterGeneration := value
 ]
 
 { #category : #removing }
@@ -140,14 +161,19 @@ BoleeDotParser >> run: path encoding: encoding [
 
 	"create relationships between files"
 	pathPairs do: [ :pair | self createModelRelationships: pair ].
+	
+	"install after generation if set to do so"
+	installAfterGeneration ifTrue: [ model installWithCache: false ].
 
 	^ model
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 BoleeDotParser >> setupNewModel [
-
+   |basePathParts|
 	model := FamixCPreprocModel new.
+	basePathParts := basePath splitOn: '/'.
+	model name: (basePathParts at: (basePathParts size - 1)).
 	modelRootFolder := FamixCPreprocFolder new name: '.'.
 	model add: modelRootFolder
 ]
