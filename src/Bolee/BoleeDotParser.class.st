@@ -112,6 +112,11 @@ BoleeDotParser >> installAfterGeneration: value [
 	installAfterGeneration := value
 ]
 
+{ #category : #printing }
+BoleeDotParser >> printSomething: sth [
+	^ sth,' 123'.
+]
+
 { #category : #removing }
 BoleeDotParser >> removeStyling: lines [
 
