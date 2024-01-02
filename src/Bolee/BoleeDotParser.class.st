@@ -114,7 +114,7 @@ BoleeDotParser >> installAfterGeneration: value [
 
 { #category : #printing }
 BoleeDotParser >> printSomething: sth [
-	^ sth,' 123'.
+	^ sth,' abc'.
 ]
 
 { #category : #removing }
