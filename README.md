@@ -50,5 +50,7 @@ Besides XML, DOT or GV files can also be used to represent include graphs. These
 
     "pass the base path of the project to be analysed and the Graphviz file to be parsed"
     parser basePath: 'ExampleEngine/'.
-    model := parser run: 'D:/MyDocs/ExampleEngine/example_engine.gv' encoding: 'UTF8'.
+
+    "Madge generates files in UTF16, but Bolées default is UTF8"
+    model := parser run: 'D:/MyDocs/ExampleEngine/example_engine.gv' encoding: 'UTF16'.
 ```
