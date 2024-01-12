@@ -3,7 +3,7 @@ Bolée (pronounced BO-ley) is a tool for Software Architecture Recovery on Moose
 - An XML file describing the dependencies
 - A CSV file describing subsystem division
 
-You can find examples of how this files should be formatted in the examples folder.
+You can find examples of how these files should be formatted in the *examples* folder on the project's root.
 
 ## Installation
 On a Moose 10 image, execute the following code snippet in a Playground:
@@ -51,6 +51,6 @@ Besides XML, DOT or GV files can also be used to represent include graphs. These
     "pass the base path of the project to be analysed and the Graphviz file to be parsed"
     parser basePath: 'ExampleEngine/'.
 
-    "Madge generates files in UTF16, but Bolées default is UTF8"
+    "Madge generates files in UTF16, but Bolée's default is UTF8"
     model := parser run: 'D:/MyDocs/ExampleEngine/example_engine.gv' encoding: 'UTF16'.
 ```
